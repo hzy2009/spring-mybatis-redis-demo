@@ -1,0 +1,76 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>spring-mybatis-redis-demo</display-name>
+  
+  <!-- Spring context startup Spring的初始化 -->
+    <context-param> 
+        <param-name>contextConfigLocation</param-name> 
+        <param-value><!-- Spring的配置文件 -->
+        classpath:/spring-*.xml
+        </param-value> 
+    </context-param> 
+    <listener> 
+        <listener-class> 
+        org.springframework.web.context.ContextLoaderListener 
+        </listener-class> 
+    </listener>
+    
+    <!-- Spring character filter 处理乱码 --> 
+    <filter> 
+        <filter-name>encodingFilter</filter-name> 
+        <filter-class> 
+        org.springframework.web.filter.CharacterEncodingFilter 
+        </filter-class> 
+        <init-param> 
+            <param-name>encoding</param-name> 
+            <param-value>UTF-8</param-value> 
+        </init-param> 
+    </filter> 
+    <filter-mapping> 
+        <filter-name>encodingFilter</filter-name> 
+        <url-pattern>/*</url-pattern> 
+    </filter-mapping>
+    
+    <!-- Configuration of Log4j log4j的配置 --> 
+    <context-param> 
+        <param-name>log4jConfigLocation</param-name> 
+        <param-value><!-- log4j.properties文件路径 --> 
+        classpath:/log4j.properties 
+        </param-value> 
+    </context-param> 
+    <context-param> 
+        <param-name>log4jRefreshInterval</param-name> 
+        <param-value>60000</param-value> 
+    </context-param> 
+    <listener> 
+        <listener-class> 
+        org.springframework.web.util.Log4jConfigListener 
+        </listener-class> 
+    </listener>
+    
+    <!-- Spring MVC Configuration Spring MVC的配置 --> 
+    <servlet> 
+        <servlet-name>dispatcher</servlet-name> 
+        <servlet-class> 
+        org.springframework.web.servlet.DispatcherServlet 
+        </servlet-class> 
+        <init-param> 
+           <param-name>contextConfigLocation</param-name> 
+           <param-value><!-- dispatcher-servlet.xml文件路径 --> 
+           classpath:/spring-mvc.xml 
+           </param-value> 
+          </init-param> 
+        <load-on-startup>1</load-on-startup> 
+    </servlet>
+    
+    <servlet-mapping> 
+        <servlet-name>dispatcher</servlet-name> 
+        <url-pattern>/</url-pattern> 
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+</web-app>

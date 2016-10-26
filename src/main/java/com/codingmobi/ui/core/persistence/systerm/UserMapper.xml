@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.codingmobi.ui.core.persistence.systerm.UserMapper" >
+  <cache type="com.codingmobi.ui.core.utils.redis.LoggingRedisCache"></cache>
+  <resultMap id="BaseResultMap" type="com.codingmobi.ui.core.bean.systerm.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="is_vaild" property="isVaild" jdbcType="INTEGER" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="ext1" property="ext1" jdbcType="INTEGER" />
+    <result column="ext2" property="ext2" jdbcType="INTEGER" />
+    <result column="ext3" property="ext3" jdbcType="INTEGER" />
+    <result column="ext4" property="ext4" jdbcType="INTEGER" />
+    <result column="ext5" property="ext5" jdbcType="INTEGER" />
+    <result column="ext6" property="ext6" jdbcType="TIMESTAMP" />
+    <result column="ext7" property="ext7" jdbcType="TIMESTAMP" />
+    <result column="ext8" property="ext8" jdbcType="TIMESTAMP" />
+    <result column="ext9" property="ext9" jdbcType="TIMESTAMP" />
+    <result column="ext10" property="ext10" jdbcType="TIMESTAMP" />
+    <result column="ext11" property="ext11" jdbcType="VARCHAR" />
+    <result column="ext12" property="ext12" jdbcType="VARCHAR" />
+    <result column="ext13" property="ext13" jdbcType="VARCHAR" />
+    <result column="ext14" property="ext14" jdbcType="VARCHAR" />
+    <result column="ext15" property="ext15" jdbcType="VARCHAR" />
+    <collection property="authorities" column="id" ofType="com.codingmobi.ui.core.bean.systerm.Role" select="selectRoleByUserId"></collection>
+  </resultMap>
+  <!-- <resultMap id="UserAndRole" type="com.codingmobi.ui.core.bean.systerm.User" extends="BaseResultMap">
+    <collection property="authorities" column="id" ofType="com.codingmobi.ui.core.bean.systerm.Role" select="selectRoleByUserId"></collection>
+  </resultMap> -->
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, login_name, password, nick_name, is_vaild, gender, email, mobile_phone, qq, create_time, 
+    update_time, ext1, ext2, ext3, ext4, ext5, ext6, ext7, ext8, ext9, ext10, ext11, 
+    ext12, ext13, ext14, ext15
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.codingmobi.ui.core.bean.systerm.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.codingmobi.ui.core.bean.systerm.UserExample" >
+    delete from t_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.codingmobi.ui.core.bean.systerm.User" >
+    insert into t_user (id, login_name, password, 
+      nick_name, is_vaild, gender, 
+      email, mobile_phone, qq, 
+      create_time, update_time, ext1, 
+      ext2, ext3, ext4, ext5, 
+      ext6, ext7, ext8, 
+      ext9, ext10, ext11, 
+      ext12, ext13, ext14, 
+      ext15)
+    values (#{id,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{nickName,jdbcType=VARCHAR}, #{isVaild,jdbcType=INTEGER}, #{gender,jdbcType=INTEGER}, 
+      #{email,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{ext1,jdbcType=INTEGER}, 
+      #{ext2,jdbcType=INTEGER}, #{ext3,jdbcType=INTEGER}, #{ext4,jdbcType=INTEGER}, #{ext5,jdbcType=INTEGER}, 
+      #{ext6,jdbcType=TIMESTAMP}, #{ext7,jdbcType=TIMESTAMP}, #{ext8,jdbcType=TIMESTAMP}, 
+      #{ext9,jdbcType=TIMESTAMP}, #{ext10,jdbcType=TIMESTAMP}, #{ext11,jdbcType=VARCHAR}, 
+      #{ext12,jdbcType=VARCHAR}, #{ext13,jdbcType=VARCHAR}, #{ext14,jdbcType=VARCHAR}, 
+      #{ext15,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.codingmobi.ui.core.bean.systerm.User" >
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="nickName != null" >
+        nick_name,
+      </if>
+      <if test="isVaild != null" >
+        is_vaild,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone,
+      </if>
+      <if test="qq != null" >
+        qq,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="ext1 != null" >
+        ext1,
+      </if>
+      <if test="ext2 != null" >
+        ext2,
+      </if>
+      <if test="ext3 != null" >
+        ext3,
+      </if>
+      <if test="ext4 != null" >
+        ext4,
+      </if>
+      <if test="ext5 != null" >
+        ext5,
+      </if>
+      <if test="ext6 != null" >
+        ext6,
+      </if>
+      <if test="ext7 != null" >
+        ext7,
+      </if>
+      <if test="ext8 != null" >
+        ext8,
+      </if>
+      <if test="ext9 != null" >
+        ext9,
+      </if>
+      <if test="ext10 != null" >
+        ext10,
+      </if>
+      <if test="ext11 != null" >
+        ext11,
+      </if>
+      <if test="ext12 != null" >
+        ext12,
+      </if>
+      <if test="ext13 != null" >
+        ext13,
+      </if>
+      <if test="ext14 != null" >
+        ext14,
+      </if>
+      <if test="ext15 != null" >
+        ext15,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="isVaild != null" >
+        #{isVaild,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext1 != null" >
+        #{ext1,jdbcType=INTEGER},
+      </if>
+      <if test="ext2 != null" >
+        #{ext2,jdbcType=INTEGER},
+      </if>
+      <if test="ext3 != null" >
+        #{ext3,jdbcType=INTEGER},
+      </if>
+      <if test="ext4 != null" >
+        #{ext4,jdbcType=INTEGER},
+      </if>
+      <if test="ext5 != null" >
+        #{ext5,jdbcType=INTEGER},
+      </if>
+      <if test="ext6 != null" >
+        #{ext6,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext7 != null" >
+        #{ext7,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext8 != null" >
+        #{ext8,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext9 != null" >
+        #{ext9,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext10 != null" >
+        #{ext10,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext11 != null" >
+        #{ext11,jdbcType=VARCHAR},
+      </if>
+      <if test="ext12 != null" >
+        #{ext12,jdbcType=VARCHAR},
+      </if>
+      <if test="ext13 != null" >
+        #{ext13,jdbcType=VARCHAR},
+      </if>
+      <if test="ext14 != null" >
+        #{ext14,jdbcType=VARCHAR},
+      </if>
+      <if test="ext15 != null" >
+        #{ext15,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.codingmobi.ui.core.bean.systerm.UserExample" resultType="java.lang.Integer" >
+    select count(*) from t_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginName != null" >
+        login_name = #{record.loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nickName != null" >
+        nick_name = #{record.nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isVaild != null" >
+        is_vaild = #{record.isVaild,jdbcType=INTEGER},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=INTEGER},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobilePhone != null" >
+        mobile_phone = #{record.mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null" >
+        qq = #{record.qq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ext1 != null" >
+        ext1 = #{record.ext1,jdbcType=INTEGER},
+      </if>
+      <if test="record.ext2 != null" >
+        ext2 = #{record.ext2,jdbcType=INTEGER},
+      </if>
+      <if test="record.ext3 != null" >
+        ext3 = #{record.ext3,jdbcType=INTEGER},
+      </if>
+      <if test="record.ext4 != null" >
+        ext4 = #{record.ext4,jdbcType=INTEGER},
+      </if>
+      <if test="record.ext5 != null" >
+        ext5 = #{record.ext5,jdbcType=INTEGER},
+      </if>
+      <if test="record.ext6 != null" >
+        ext6 = #{record.ext6,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ext7 != null" >
+        ext7 = #{record.ext7,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ext8 != null" >
+        ext8 = #{record.ext8,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ext9 != null" >
+        ext9 = #{record.ext9,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ext10 != null" >
+        ext10 = #{record.ext10,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ext11 != null" >
+        ext11 = #{record.ext11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext12 != null" >
+        ext12 = #{record.ext12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext13 != null" >
+        ext13 = #{record.ext13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext14 != null" >
+        ext14 = #{record.ext14,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext15 != null" >
+        ext15 = #{record.ext15,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_user
+    set id = #{record.id,jdbcType=INTEGER},
+      login_name = #{record.loginName,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      nick_name = #{record.nickName,jdbcType=VARCHAR},
+      is_vaild = #{record.isVaild,jdbcType=INTEGER},
+      gender = #{record.gender,jdbcType=INTEGER},
+      email = #{record.email,jdbcType=VARCHAR},
+      mobile_phone = #{record.mobilePhone,jdbcType=VARCHAR},
+      qq = #{record.qq,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      ext1 = #{record.ext1,jdbcType=INTEGER},
+      ext2 = #{record.ext2,jdbcType=INTEGER},
+      ext3 = #{record.ext3,jdbcType=INTEGER},
+      ext4 = #{record.ext4,jdbcType=INTEGER},
+      ext5 = #{record.ext5,jdbcType=INTEGER},
+      ext6 = #{record.ext6,jdbcType=TIMESTAMP},
+      ext7 = #{record.ext7,jdbcType=TIMESTAMP},
+      ext8 = #{record.ext8,jdbcType=TIMESTAMP},
+      ext9 = #{record.ext9,jdbcType=TIMESTAMP},
+      ext10 = #{record.ext10,jdbcType=TIMESTAMP},
+      ext11 = #{record.ext11,jdbcType=VARCHAR},
+      ext12 = #{record.ext12,jdbcType=VARCHAR},
+      ext13 = #{record.ext13,jdbcType=VARCHAR},
+      ext14 = #{record.ext14,jdbcType=VARCHAR},
+      ext15 = #{record.ext15,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.codingmobi.ui.core.bean.systerm.User" >
+    update t_user
+    <set >
+      <if test="loginName != null" >
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="isVaild != null" >
+        is_vaild = #{isVaild,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext1 != null" >
+        ext1 = #{ext1,jdbcType=INTEGER},
+      </if>
+      <if test="ext2 != null" >
+        ext2 = #{ext2,jdbcType=INTEGER},
+      </if>
+      <if test="ext3 != null" >
+        ext3 = #{ext3,jdbcType=INTEGER},
+      </if>
+      <if test="ext4 != null" >
+        ext4 = #{ext4,jdbcType=INTEGER},
+      </if>
+      <if test="ext5 != null" >
+        ext5 = #{ext5,jdbcType=INTEGER},
+      </if>
+      <if test="ext6 != null" >
+        ext6 = #{ext6,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext7 != null" >
+        ext7 = #{ext7,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext8 != null" >
+        ext8 = #{ext8,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext9 != null" >
+        ext9 = #{ext9,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext10 != null" >
+        ext10 = #{ext10,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ext11 != null" >
+        ext11 = #{ext11,jdbcType=VARCHAR},
+      </if>
+      <if test="ext12 != null" >
+        ext12 = #{ext12,jdbcType=VARCHAR},
+      </if>
+      <if test="ext13 != null" >
+        ext13 = #{ext13,jdbcType=VARCHAR},
+      </if>
+      <if test="ext14 != null" >
+        ext14 = #{ext14,jdbcType=VARCHAR},
+      </if>
+      <if test="ext15 != null" >
+        ext15 = #{ext15,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.codingmobi.ui.core.bean.systerm.User" >
+    update t_user
+    set login_name = #{loginName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      is_vaild = #{isVaild,jdbcType=INTEGER},
+      gender = #{gender,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      qq = #{qq,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      ext1 = #{ext1,jdbcType=INTEGER},
+      ext2 = #{ext2,jdbcType=INTEGER},
+      ext3 = #{ext3,jdbcType=INTEGER},
+      ext4 = #{ext4,jdbcType=INTEGER},
+      ext5 = #{ext5,jdbcType=INTEGER},
+      ext6 = #{ext6,jdbcType=TIMESTAMP},
+      ext7 = #{ext7,jdbcType=TIMESTAMP},
+      ext8 = #{ext8,jdbcType=TIMESTAMP},
+      ext9 = #{ext9,jdbcType=TIMESTAMP},
+      ext10 = #{ext10,jdbcType=TIMESTAMP},
+      ext11 = #{ext11,jdbcType=VARCHAR},
+      ext12 = #{ext12,jdbcType=VARCHAR},
+      ext13 = #{ext13,jdbcType=VARCHAR},
+      ext14 = #{ext14,jdbcType=VARCHAR},
+      ext15 = #{ext15,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectRoleByUserId" parameterType="int" resultMap="com.codingmobi.ui.core.persistence.systerm.RoleMapper.BaseResultMap">
+    SELECT
+      r.*
+    FROM
+      t_user_role_ref AS ref ,
+      t_role AS r
+    WHERE
+      ref.role_id =  r.id AND
+      ref.user_id =  #{id,jdbcType=INTEGER}
+  </select>
+</mapper>
